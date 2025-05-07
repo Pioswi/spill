@@ -1,0 +1,43 @@
+#divMeny
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top:0;
+    bottom: 0;
+    background-color: cadetblue;
+    z-index: 1000;
+    display: none;
+}
+
+#divAmmo{
+    position: absolute;
+    left: 50px;
+    top: 70px;
+    width: 200px;
+    height: 40px;
+    border-style: solid;
+    border-width: 5px;
+}
+
+#divPoeng{
+    position: absolute;
+    left: 300px;
+    top: 70px;
+    height: 40px;
+    width: 200px;
+    border-style: solid;
+    border-width: 5px;
+}
+
+#divSpill{
+    position: absolute;
+    left: 50px;
+    top: 120px;
+    width: 450px;
+    height: 400px;
+    border-style: solid;
+    border-width: 5px;
+    cursor: crosshair;
+    
+}

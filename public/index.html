@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Game</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        #gameArea { position: relative; width: 400px; height: 400px; margin: auto; border: 2px solid black; }
+        .ball { width: 30px; height: 30px; background: red; border-radius: 50%; position: absolute; cursor: pointer; }
+        #controls { margin-top: 20px; }
+        button { margin: 5px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Click the Ball!</h1>
+    <h2>Score: <span id="score">0</span></h2>
+    <h2>Time Left: <span id="timer">20</span>s</h2>
+    <div id="gameArea"></div>
+    <div id="controls">
+        <button id="playAgain" style="display:none;">Play Again</button>
+        <button id="deleteScore" style="display:none;">Delete Score</button>
+    </div>
+
+
+
+    <h2>Leaderboard</h2>
+    <ul id="leaderboard"></ul>
+
+    <button id="switch-game">Switch Game</button>
+    <script>
+    document.getElementById("switch-game").addEventListener("click", () => {
+        window.location.href = window.location.href.includes("reaction.html") ? "spillet.html" : "reaction.html";
+    });
+    </script>
+    
+
+    <script>
+        let score = 0;
+        let timeLeft = 20;
+        let gameActive = false;
+        let timer;
+        const gameArea = document.getElementById("gameArea");
+        const scoreDisplay = document.getElementById("score");
+        const timerDisplay = document.getElementById("timer");
+        const playAgainBtn = document.getElementById("playAgain");
+        const deleteScoreBtn = document.getElementById("deleteScore");
+
+        function startGame() {
+            score = 0;
+            scoreDisplay.textContent = score;
+            timeLeft = 20;
+            timerDisplay.textContent = timeLeft;
+            gameActive = true;
+            playAgainBtn.style.display = "none";
+            deleteScoreBtn.style.display = "none";
+            startTimer();
+            spawnBall();
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+                if (timeLeft <= 0) endGame();
+            }, 1000);
+        }
+
+        function spawnBall() {
+            if (!gameActive) return;
+            const ball = document.createElement("div");
+            ball.classList.add("ball");
+            ball.style.top = `${Math.random() * 370}px`;
+            ball.style.left = `${Math.random() * 370}px`;
+            ball.onclick = () => {
+                if (!gameActive) return;
+                score++;
+                scoreDisplay.textContent = score;
+                ball.remove();
+                spawnBall();
+            };
+            gameArea.innerHTML = "";
+            gameArea.appendChild(ball);
+        }
+
+        function endGame() {
+            gameActive = false;
+            clearInterval(timer);
+            gameArea.innerHTML = "";
+            saveScore();
+            playAgainBtn.style.display = "block";
+            deleteScoreBtn.style.display = "block";
+        }
+
+        async function saveScore() {
+            const response = await fetch('/save-score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ score })
+            });
+            loadLeaderboard();
+        }
+
+        async function deleteScore() {
+            await fetch('/delete-score', { method: 'POST' });
+            loadLeaderboard();
+        }
+
+        async function loadLeaderboard() {
+            const response = await fetch('/leaderboard');
+            const data = await response.json();
+            const leaderboard = document.getElementById("leaderboard");
+            leaderboard.innerHTML = "";
+            data.highScore.forEach(entry => {
+                const li = document.createElement("li");
+                li.textContent = `${entry.userName}: ${entry.score}`;
+                leaderboard.appendChild(li);
+            });
+        }
+
+        playAgainBtn.onclick = startGame;
+        deleteScoreBtn.onclick = deleteScore;
+        loadLeaderboard();
+    </script>
+</body>
+</html>

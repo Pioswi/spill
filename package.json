@@ -1,0 +1,14 @@
+{
+  "name": "spillprosjekt",
+  "version": "1.0.0",
+  "description": "Shooting game with authentication",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "better-sqlite3": "^11.9.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "sqlite3": "^5.1.6"
+  }
+}

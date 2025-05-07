@@ -1,0 +1,7 @@
+CREATE TABLE user (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userName VARCHAR(45) NOT NULL,
+    epost VARCHAR(45) NOT NULL,
+    passord VARCHAR(255) NOT NULL,
+    isAdmin TINYINT
+);

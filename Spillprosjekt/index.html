@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/stil.css">
+        <meta charset="utf-8">
+        <title>Skytespill</title>
+    </head>
+
+    <body>
+        <h1>Skytespill</h1>
+        
+        <!-- Add login form -->
+        <div id="loginForm">
+            <input type="text" id="username" placeholder="Brukernavn">
+            <input type="password" id="password" placeholder="Passord">
+            <button onclick="login()">Logg inn</button>
+        </div>
+
+        <!-- Hide game elements initially -->
+        <div id="gameContent" style="display: none;">
+            <div id="divAmmo">ammoAntall</div>
+            <div id="divPoeng">0</div>
+            <div id="divSpill"></div>
+
+            <div id="divMeny">
+                Gratulerer, spilleter over.
+                <br>
+                Du fikk <span id="poeng">0</span> poeng.
+                <br>
+                <button onclick="restartGame()">Start på nytt</button>
+            </div>
+        </div>
+
+        <script src="js/spill.js"></script>
+    </body>
+</html>
